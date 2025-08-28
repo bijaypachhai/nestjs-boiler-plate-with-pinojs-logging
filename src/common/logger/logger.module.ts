@@ -2,6 +2,7 @@ import { Module, RequestMethod } from "@nestjs/common";
 import { LoggerModule } from "nestjs-pino";
 import { PinoLoggerService } from "./logger.service";
 import createWritableStream from "./logger.transport";
+import { streamDestination, streamTransport } from "./custom.transport";
 
 @Module({
     imports: [
@@ -13,7 +14,18 @@ import createWritableStream from "./logger.transport";
             //         path: '/'
             //     }
             // ],
-            pinoHttp: createWritableStream(),
+            pinoHttp: [
+                {
+                    // autoLogging: false,
+                    // stream: pino.destination({
+                    //     sync: false,
+                    //     minLength: 2048,
+                    //     dest: './stream.log'
+                    // })
+                },
+                streamDestination
+                // createWritableStream()
+            ],
         })
     ],
     providers: [PinoLoggerService],
